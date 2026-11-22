@@ -1,12 +1,12 @@
 :root {
   color-scheme: dark;
-  --night: #0b162a;
-  --stroke: rgba(198, 220, 244, 0.33);
-  --ink: #f1f5ff;
-  --text: #dbe4f5;
-  --muted: #abbada;
-  --accent: #9added;
-  --text-shadow: 0 1px 3px rgba(4, 10, 26, 0.95), 0 2px 8px rgba(4, 10, 26, 0.72);
+  --night: #192e20;
+  --stroke: rgba(234, 247, 223, 0.4);
+  --ink: #fffdf3;
+  --text: #f0f6e8;
+  --muted: #deead9;
+  --accent: #ffedb5;
+  --text-shadow: 0 1px 3px rgba(10, 25, 14, 0.96), 0 2px 8px rgba(10, 25, 14, 0.75);
   --content-padding: clamp(0px, 1.25vw, 16px);
 }
 
@@ -32,14 +32,16 @@ body {
 
 .night-sky::before {
   inset: -30px;
-  background: url("../images/moonlit-lake.jpg") center / cover no-repeat;
+  background: url("../images/spring-meadow.jpg") center / cover no-repeat;
   transform: translate3d(var(--wallpaper-x, 0px), var(--wallpaper-y, 0px), 0);
   transition: transform 360ms cubic-bezier(0.2, 0.55, 0.35, 1);
 }
 
 .night-sky::after {
   inset: 0;
-  background: linear-gradient(180deg, rgba(4, 9, 22, 0.1), rgba(4, 9, 22, 0.34) 45%, rgba(4, 9, 22, 0.44));
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(13, 31, 18, 0.18), transparent 52%),
+    linear-gradient(180deg, rgba(13, 31, 18, 0.16), rgba(13, 31, 18, 0.36) 45%, rgba(13, 31, 18, 0.46));
 }
 
 #container { z-index: 1; }
@@ -74,7 +76,7 @@ body {
   margin: 0;
   border: 1px solid var(--stroke);
   border-radius: 18px;
-  background: rgba(10, 17, 37, 0.25);
+  background: rgba(22, 43, 26, 0.38);
   backdrop-filter: blur(8px);
 }
 
@@ -92,14 +94,14 @@ body {
 
 #header-inner :is(.main-nav-link, .nav-icon):hover {
   color: #f9fcff;
-  background: rgba(170, 195, 255, 0.16);
+  background: rgba(229, 245, 199, 0.17);
 }
 
 #search-form-wrap { top: 9px; }
 #search-form-wrap.on { right: 8px; }
 #header-inner .search-form {
   border: 1px solid var(--stroke);
-  background: #18223d;
+  background: #233c29;
 }
 #header-inner :is(.search-form-input, .search-form-submit) { color: var(--ink); }
 #mobile-nav { display: none; }
@@ -118,7 +120,7 @@ body {
   width: 24px;
   height: 24px;
   margin: 0 auto 16px;
-  background: linear-gradient(130deg, #b5f1ff, #c0acff);
+  background: linear-gradient(130deg, #fff4c1, #cbebad);
   clip-path: polygon(50% 0, 62% 37%, 100% 50%, 62% 63%, 50% 100%, 38% 63%, 0 50%, 38% 37%);
   content: "";
 }
@@ -216,15 +218,15 @@ body {
 
 .article-entry .article-more-link a {
   padding: 10px 17px;
-  border: 1px solid rgba(151, 216, 243, 0.3);
+  border: 1px solid var(--stroke);
   border-radius: 100px;
-  background: rgba(9, 20, 42, 0.26);
-  color: #c5edff;
+  background: rgba(18, 44, 25, 0.48);
+  color: var(--accent);
   text-shadow: none;
 }
 
 .article-entry .article-more-link a:hover {
-  background: rgba(105, 188, 237, 0.27);
+  background: rgba(18, 44, 25, 0.7);
   color: #fff;
   text-decoration: none;
   text-shadow: none;
@@ -283,12 +285,12 @@ body {
 }
 
 :is(#container a, #container button, #container input):focus-visible {
-  outline: 2px solid #b4edff;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
 @media (max-width: 479px) {
-  .night-sky::before { background-position: 73% center; }
+  .night-sky::before { background-position: 62% center; }
   #header-inner { top: 12px; }
   #header #search-form-wrap.on {
     width: calc(100% - 16px);
@@ -298,7 +300,7 @@ body {
     display: block;
     visibility: hidden;
     border-color: var(--stroke);
-    background: #111b36;
+    background: #233c29;
   }
   .mobile-nav-on #mobile-nav { visibility: visible; }
   .mobile-nav-link { color: var(--text); }
