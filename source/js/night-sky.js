@@ -1,8 +1,39 @@
 (() => {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const wallpaper = document.querySelector('.night-sky');
+
+  if (wallpaper) {
+    let x = 0;
+    let y = 0;
+    let frame = 0;
+
+    function moveWallpaper(nextX, nextY) {
+      x = nextX;
+      y = nextY;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        wallpaper.style.setProperty('--wallpaper-x', `${x}px`);
+        wallpaper.style.setProperty('--wallpaper-y', `${y}px`);
+        frame = 0;
+      });
+    }
+
+    const centerWallpaper = () => moveWallpaper(0, 0);
+    document.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || reducedMotion.matches) return;
+      moveWallpaper(
+        Math.round((event.clientX / window.innerWidth - 0.5) * 42),
+        Math.round((event.clientY / window.innerHeight - 0.5) * 34),
+      );
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', centerWallpaper);
+    window.addEventListener('blur', centerWallpaper);
+    reducedMotion.addEventListener('change', centerWallpaper);
+  }
+
   const layer = document.querySelector('.star-click-layer');
   if (!layer) return;
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const colors = ['#fdf2ce', '#a9e9ff', '#cfb6ff', '#ffffff'];
   const particleCount = 9;
   const maxBursts = 5;
