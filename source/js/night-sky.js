@@ -4,35 +4,54 @@
   const angelTemplate = document.getElementById('blog-angel-template');
   if (header && angelTemplate) header.append(angelTemplate.content.cloneNode(true));
 
-  const wallpaper = document.querySelector('.night-sky');
+  const video = document.querySelector('.wallpaper-video');
 
-  if (wallpaper) {
-    let x = 0;
-    let y = 0;
-    let frame = 0;
+  if (video) {
+    const toggle = document.createElement('button');
+    const icon = document.createElement('span');
+    toggle.className = 'nav-icon wallpaper-toggle';
+    toggle.type = 'button';
+    icon.setAttribute('aria-hidden', 'true');
+    toggle.append(icon);
+    document.getElementById('sub-nav')?.prepend(toggle);
+    let userPaused = false;
 
-    function moveWallpaper(nextX, nextY) {
-      x = nextX;
-      y = nextY;
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        wallpaper.style.setProperty('--wallpaper-x', `${x}px`);
-        wallpaper.style.setProperty('--wallpaper-y', `${y}px`);
-        frame = 0;
-      });
+    function updateControl() {
+      const label = video.paused ? '播放背景视频' : '暂停背景视频';
+      icon.className = video.paused ? 'fa fa-play' : 'fa fa-pause';
+      toggle.setAttribute('aria-label', label);
+      toggle.title = label;
+      toggle.hidden = reducedMotion.matches || Boolean(video.error);
     }
 
-    const centerWallpaper = () => moveWallpaper(0, 0);
-    document.addEventListener('pointermove', (event) => {
-      if (event.pointerType !== 'mouse' || reducedMotion.matches) return;
-      moveWallpaper(
-        Math.round((event.clientX / window.innerWidth - 0.5) * 42),
-        Math.round((event.clientY / window.innerHeight - 0.5) * 34),
-      );
-    }, { passive: true });
-    document.documentElement.addEventListener('pointerleave', centerWallpaper);
-    window.addEventListener('blur', centerWallpaper);
-    reducedMotion.addEventListener('change', centerWallpaper);
+    function updatePlayback() {
+      if (reducedMotion.matches || document.hidden || userPaused) {
+        video.pause();
+        if (reducedMotion.matches) video.classList.remove('has-video-frame');
+      } else {
+        if (!video.getAttribute('src')) video.src = video.dataset.src;
+        video.play().catch(updateControl);
+      }
+      updateControl();
+    }
+
+    video.muted = true;
+    video.addEventListener('playing', () => {
+      if (!reducedMotion.matches) video.classList.add('has-video-frame');
+      updateControl();
+    });
+    video.addEventListener('pause', updateControl);
+    video.addEventListener('error', () => {
+      video.classList.remove('has-video-frame');
+      updateControl();
+    });
+    toggle.addEventListener('click', () => {
+      userPaused = !video.paused;
+      updatePlayback();
+    });
+    document.addEventListener('visibilitychange', updatePlayback);
+    reducedMotion.addEventListener('change', updatePlayback);
+    updatePlayback();
   }
 
   const layer = document.querySelector('.star-click-layer');
@@ -46,7 +65,7 @@
     if (
       reducedMotion.matches ||
       event.detail === 0 ||
-      event.target.closest?.('input, textarea, select, [contenteditable=true]') ||
+      event.target.closest?.('.wallpaper-toggle, input, textarea, select, [contenteditable=true]') ||
       !window.getSelection().isCollapsed
     ) {
       return;

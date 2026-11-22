@@ -1,12 +1,12 @@
 :root {
   color-scheme: dark;
-  --night: #192e20;
-  --stroke: rgba(234, 247, 223, 0.4);
+  --night: #2c1c24;
+  --stroke: rgba(253, 231, 205, 0.4);
   --ink: #fffdf3;
-  --text: #f0f6e8;
-  --muted: #deead9;
-  --accent: #ffedb5;
-  --text-shadow: 0 1px 3px rgba(10, 25, 14, 0.96), 0 2px 8px rgba(10, 25, 14, 0.75);
+  --text: #fbf0e7;
+  --muted: #eddfd8;
+  --accent: #ffdf98;
+  --text-shadow: 0 1px 3px rgba(27, 16, 22, 0.96), 0 2px 8px rgba(27, 16, 22, 0.82);
   --content-padding: clamp(0px, 1.25vw, 16px);
 }
 
@@ -30,18 +30,34 @@ body {
   content: "";
 }
 
-.night-sky::before {
-  inset: -30px;
-  background: url("../images/spring-meadow.jpg") center / cover no-repeat;
-  transform: translate3d(var(--wallpaper-x, 0px), var(--wallpaper-y, 0px), 0);
-  transition: transform 360ms cubic-bezier(0.2, 0.55, 0.35, 1);
+.night-sky::before,
+.wallpaper-video {
+  position: absolute;
+  inset: 0;
 }
 
+.night-sky::before {
+  background: url("../images/dusk-cottage.jpg") center / cover no-repeat;
+}
+
+.wallpaper-video {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.wallpaper-video.has-video-frame { opacity: 1; }
+
 .night-sky::after {
+  z-index: 2;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 18%, rgba(13, 31, 18, 0.18), transparent 52%),
-    linear-gradient(180deg, rgba(13, 31, 18, 0.16), rgba(13, 31, 18, 0.36) 45%, rgba(13, 31, 18, 0.46));
+    radial-gradient(ellipse at 62% 24%, rgba(30, 20, 29, 0.2), transparent 63%),
+    linear-gradient(180deg, rgba(29, 19, 29, 0.26), rgba(29, 19, 29, 0.39) 44%, rgba(29, 19, 29, 0.52));
 }
 
 #container { z-index: 1; }
@@ -76,7 +92,7 @@ body {
   margin: 0;
   border: 1px solid var(--stroke);
   border-radius: 18px;
-  background: rgba(22, 43, 26, 0.38);
+  background: rgba(41, 25, 36, 0.45);
   backdrop-filter: blur(8px);
 }
 
@@ -94,17 +110,24 @@ body {
 
 #header-inner :is(.main-nav-link, .nav-icon):hover {
   color: #f9fcff;
-  background: rgba(229, 245, 199, 0.17);
+  background: rgba(249, 226, 209, 0.17);
 }
 
 #search-form-wrap { top: 9px; }
 #search-form-wrap.on { right: 8px; }
 #header-inner .search-form {
   border: 1px solid var(--stroke);
-  background: #233c29;
+  background: #382632;
 }
 #header-inner :is(.search-form-input, .search-form-submit) { color: var(--ink); }
 #mobile-nav { display: none; }
+
+#header-inner .wallpaper-toggle {
+  box-sizing: content-box;
+  border: 0;
+  background: transparent;
+}
+#header-inner .wallpaper-toggle[hidden] { display: none; }
 
 #header-title {
   inset: 37px 0 0;
@@ -120,7 +143,7 @@ body {
   width: 24px;
   height: 24px;
   margin: 0 auto 16px;
-  background: linear-gradient(130deg, #fff4c1, #cbebad);
+  background: linear-gradient(130deg, #fff0bb, #ffc8dc);
   clip-path: polygon(50% 0, 62% 37%, 100% 50%, 62% 63%, 50% 100%, 38% 63%, 0 50%, 38% 37%);
   content: "";
 }
@@ -220,13 +243,13 @@ body {
   padding: 10px 17px;
   border: 1px solid var(--stroke);
   border-radius: 100px;
-  background: rgba(18, 44, 25, 0.48);
+  background: rgba(54, 31, 39, 0.57);
   color: var(--accent);
   text-shadow: none;
 }
 
 .article-entry .article-more-link a:hover {
-  background: rgba(18, 44, 25, 0.7);
+  background: rgba(54, 31, 39, 0.76);
   color: #fff;
   text-decoration: none;
   text-shadow: none;
@@ -290,7 +313,8 @@ body {
 }
 
 @media (max-width: 479px) {
-  .night-sky::before { background-position: 62% center; }
+  .night-sky::before { background-position: 43% center; }
+  .wallpaper-video { object-position: 43% center; }
   #header-inner { top: 12px; }
   #header #search-form-wrap.on {
     width: calc(100% - 16px);
@@ -300,7 +324,7 @@ body {
     display: block;
     visibility: hidden;
     border-color: var(--stroke);
-    background: #233c29;
+    background: #382632;
   }
   .mobile-nav-on #mobile-nav { visibility: visible; }
   .mobile-nav-link { color: var(--text); }
@@ -463,7 +487,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .night-sky::before { transform: none; transition: none; }
+  .wallpaper-video { display: none; }
   .star-click-layer { display: none; }
   .mascot-figure, .mascot-wing, .mascot-eyelid { animation: none; }
 }
