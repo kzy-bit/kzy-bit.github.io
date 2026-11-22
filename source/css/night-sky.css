@@ -365,7 +365,167 @@ body {
   }
 }
 
+.flying-mascots {
+  position: fixed;
+  z-index: 9;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flying-mascot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(72px, 8vw, 112px);
+  transform: translate3d(var(--mascot-x, 68px), var(--mascot-y, calc(100dvh - 73px)), 0) translate(-50%, -50%);
+  filter: drop-shadow(0 5px 8px rgba(3, 8, 22, 0.48));
+}
+
+.flying-mascot--angel {
+  --wing-speed: 1.05s;
+  --blink-speed: 4.7s;
+  --spark: #ffe6a2;
+}
+
+.flying-mascot--devil {
+  --mascot-x: calc(100vw - 68px);
+  --wing-speed: 0.88s;
+  --blink-speed: 5.3s;
+  --blink-delay: -1.9s;
+  --spark: #f1aacc;
+}
+
+.mascot-hover {
+  position: relative;
+  animation: mascot-float 2.6s ease-in-out infinite;
+}
+
+.flying-mascot--angel .mascot-hover {
+  mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+}
+
+.flying-mascot--devil .mascot-hover { animation-delay: -1.15s; }
+
+.mascot-body,
+.mascot-wing { display: block; width: 100%; }
+.mascot-body { position: relative; height: auto; }
+
+.mascot-wing {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  animation: mascot-flap var(--wing-speed) ease-in-out infinite;
+}
+
+.mascot-wing--left { --lift: 10deg; transform-origin: 39% 64%; }
+.mascot-wing--right { --lift: -10deg; transform-origin: 65% 64%; }
+
+.flying-mascot--angel .mascot-body {
+  clip-path: polygon(0 0, 100% 0, 100% 48%, 80% 49%, 72% 55%, 68% 62%, 72% 78%, 77% 100%, 24% 100%, 27% 82%, 36% 63%, 33% 56%, 27% 51%, 0 51%);
+}
+.flying-mascot--angel .mascot-wing--left {
+  clip-path: polygon(0 69%, 14% 56%, 23% 50%, 34% 49%, 37% 55%, 43% 60%, 45% 69%, 37% 83%, 0 85%);
+}
+.flying-mascot--angel .mascot-wing--right {
+  clip-path: polygon(65% 59%, 72% 53%, 79% 48%, 87% 51%, 93% 62%, 100% 66%, 100% 83%, 82% 83%, 72% 77%, 65% 72%);
+}
+
+.flying-mascot--devil .mascot-body {
+  clip-path: polygon(0 0, 100% 0, 100% 51%, 81% 53%, 72% 58%, 67% 65%, 70% 75%, 73% 86%, 66% 100%, 22% 100%, 24% 83%, 29% 73%, 35% 63%, 30% 58%, 22% 55%, 0 53%);
+}
+.flying-mascot--devil .mascot-wing--left {
+  clip-path: polygon(11% 71%, 18% 63%, 24% 58%, 34% 56%, 40% 60%, 43% 68%, 34% 76%, 19% 79%, 11% 75%);
+}
+.flying-mascot--devil .mascot-wing--right {
+  clip-path: polygon(61% 62%, 67% 58%, 72% 55%, 80% 59%, 88% 68%, 88% 78%, 77% 80%, 68% 76%, 62% 70%);
+}
+
+.mascot-eyelid {
+  position: absolute;
+  left: var(--eye-left);
+  top: var(--eye-top);
+  width: var(--eye-width);
+  height: var(--eye-height);
+  transform: rotate(var(--eye-tilt));
+  border-radius: 45% 50% 45% 55%;
+  box-shadow: 0 0 1px #fbe5df;
+  background: linear-gradient(180deg, #f7e4df, #fff1ea 56%, #ffe7e1);
+  opacity: 0;
+  animation: mascot-blink var(--blink-speed) var(--blink-delay, 0s) infinite;
+}
+
+.mascot-eyelid::after {
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  width: 80%;
+  height: 36%;
+  border-bottom: 1px solid #816363;
+  border-radius: 12% 12% 60% 55%;
+  content: "";
+}
+
+.flying-mascot--angel .mascot-eyelid--left {
+  --eye-left: 49%;
+  --eye-top: 41.3%;
+  --eye-width: 6.9%;
+  --eye-height: 7.8%;
+  --eye-tilt: -15deg;
+}
+.flying-mascot--angel .mascot-eyelid--right {
+  --eye-left: 60.8%;
+  --eye-top: 38.1%;
+  --eye-width: 4.65%;
+  --eye-height: 7.4%;
+  --eye-tilt: -9deg;
+}
+.flying-mascot--devil .mascot-eyelid--left {
+  --eye-left: 34.3%;
+  --eye-top: 42.8%;
+  --eye-width: 6.15%;
+  --eye-height: 7.65%;
+  --eye-tilt: 11deg;
+}
+.flying-mascot--devil .mascot-eyelid--right {
+  --eye-left: 45.7%;
+  --eye-top: 39.8%;
+  --eye-width: 7.8%;
+  --eye-height: 7.45%;
+  --eye-tilt: 6deg;
+}
+
+.mascot-spark {
+  position: absolute;
+  top: 15%;
+  left: 76%;
+  color: var(--spark);
+  font-size: 21px;
+  text-shadow: 0 0 10px var(--spark);
+  opacity: 0;
+}
+
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(0) rotate(var(--bank, 0deg)); }
+  50% { transform: translateY(-5px) rotate(var(--bank, 0deg)); }
+}
+
+@keyframes mascot-flap {
+  0%, 100% { transform: rotate(var(--lift)) scaleX(0.91); }
+  52% { transform: rotate(calc(var(--lift) * -0.65)) scaleX(1); }
+}
+
+@keyframes mascot-blink {
+  0%, 88%, 94%, 100% { opacity: 0; }
+  90%, 92% { opacity: 1; }
+}
+
+@media (max-width: 599px) {
+  .flying-mascot { width: 66px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .night-sky::before { transform: none; transition: none; }
   .star-click-layer { display: none; }
+  .mascot-hover, .mascot-wing, .mascot-eyelid { animation: none; }
 }
