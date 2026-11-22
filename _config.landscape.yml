@@ -1,0 +1,4 @@
+fancybox: false
+widgets:
+  - archive
+  - recent_posts

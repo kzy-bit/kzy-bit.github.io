@@ -1,0 +1,14 @@
+title: 我的博客
+description: 记录文字与照片
+language: zh-CN
+timezone: Asia/Shanghai
+
+# 本地预览地址。GitHub Actions 构建时使用 Pages 返回的正式地址。
+url: http://localhost:4000
+permalink: posts/:title/
+theme: landscape
+
+post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
