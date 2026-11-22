@@ -312,38 +312,57 @@ body {
   pointer-events: none;
 }
 
-.star-burst { position: absolute; }
+.firework-burst { position: absolute; }
 
-.star-burst::before {
+.firework-burst::before {
   position: absolute;
-  inset: -12px;
-  border: 1px solid #a8e5ff;
-  border-radius: 50%;
+  inset: -35px;
+  background: radial-gradient(circle, #fff 3%, #fff6d8 11%, rgba(255, 199, 131, 0.52) 25%, transparent 69%);
   content: "";
-  animation: star-ring 390ms ease-out both;
+  animation: firework-flash 260ms ease-out both;
 }
 
-.star-particle {
+.firework-spark {
   position: absolute;
-  top: calc(var(--size) / -2);
-  left: calc(var(--size) / -2);
-  width: var(--size);
-  height: var(--size);
-  background: var(--spark-color);
-  clip-path: polygon(50% 0, 63% 37%, 100% 50%, 63% 63%, 50% 100%, 37% 63%, 0 50%, 37% 37%);
-  animation: star-scatter var(--life) cubic-bezier(0.12, 0.67, 0.35, 1) both;
+  top: -1px;
+  left: 0;
+  width: var(--length);
+  height: 2px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, transparent, var(--spark-color) 65%, #fff9ea);
+  transform-origin: left center;
+  animation: firework-scatter var(--life) ease-out both;
 }
 
-@keyframes star-ring {
-  from { opacity: 0.7; transform: scale(0.3); }
-  to { opacity: 0; transform: scale(2.5); }
+.firework-spark::after {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fffdf4;
+  box-shadow: 0 0 5px 1px var(--spark-color);
+  content: "";
 }
 
-@keyframes star-scatter {
-  0% { opacity: 0; transform: scale(0.95); }
+@keyframes firework-flash {
+  0% { opacity: 1; transform: scale(0.26); }
+  30% { opacity: 0.88; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
+
+@keyframes firework-scatter {
+  0% { opacity: 0; transform: translateY(0) rotate(var(--angle)) translateX(1px) scaleX(0.16); }
   12% { opacity: 1; }
-  68% { opacity: 0.86; }
-  100% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(var(--turn)) scale(0.44); }
+  38% {
+    transform: translateY(0) rotate(var(--angle)) translateX(calc(var(--distance) * 0.72)) scaleX(1);
+  }
+  66% { opacity: 0.76; }
+  100% {
+    opacity: 0;
+    transform: translateY(var(--fall)) rotate(var(--angle)) translateX(var(--distance)) scaleX(0.2);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

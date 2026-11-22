@@ -34,8 +34,8 @@
   const layer = document.querySelector('.star-click-layer');
   if (!layer) return;
 
-  const colors = ['#fdf2ce', '#a9e9ff', '#cfb6ff', '#ffffff'];
-  const particleCount = 9;
+  const colors = ['#ffca83', '#fff1bf', '#ffaf8a', '#e3f3ff'];
+  const sparkCount = 18;
   const maxBursts = 5;
 
   document.addEventListener('click', (event) => {
@@ -49,27 +49,26 @@
     }
 
     const burst = document.createElement('span');
-    burst.className = 'star-burst';
+    burst.className = 'firework-burst';
     burst.style.left = `${event.clientX}px`;
     burst.style.top = `${event.clientY}px`;
-    const rotation = Math.random() * Math.PI * 2;
+    const rotation = Math.random() * 360;
 
-    for (let index = 0; index < particleCount; index += 1) {
-      const angle = rotation + index * Math.PI * 2 / particleCount;
-      const distance = 23 + Math.random() * 34;
-      const particle = document.createElement('span');
-      particle.className = 'star-particle';
-      particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-      particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-      particle.style.setProperty('--size', `${9 + Math.random() * 8}px`);
-      particle.style.setProperty('--spark-color', colors[index % colors.length]);
-      particle.style.setProperty('--turn', `${(index % 2 ? -1 : 1) * (40 + Math.random() * 140)}deg`);
-      particle.style.setProperty('--life', `${440 + Math.random() * 260}ms`);
-      burst.append(particle);
+    for (let index = 0; index < sparkCount; index += 1) {
+      const angle = rotation + index * 360 / sparkCount + Math.random() * 12 - 6;
+      const spark = document.createElement('span');
+      spark.className = 'firework-spark';
+      spark.style.setProperty('--angle', `${angle}deg`);
+      spark.style.setProperty('--distance', `${40 + Math.random() * 54}px`);
+      spark.style.setProperty('--length', `${7 + Math.random() * 15}px`);
+      spark.style.setProperty('--fall', `${9 + Math.random() * 16}px`);
+      spark.style.setProperty('--spark-color', colors[index % colors.length]);
+      spark.style.setProperty('--life', `${510 + Math.random() * 270}ms`);
+      burst.append(spark);
     }
 
     if (layer.childElementCount >= maxBursts) layer.firstElementChild.remove();
     layer.append(burst);
-    window.setTimeout(() => burst.remove(), 750);
+    window.setTimeout(() => burst.remove(), 850);
   });
 })();
