@@ -365,38 +365,21 @@ body {
   }
 }
 
-.blog-mascots {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  max-width: 270px;
-  margin: 24px auto 32px;
-}
-
-.blog-mascot {
-  display: block;
-  min-width: 0;
-  padding: 6px;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  cursor: pointer;
+.blog-angel {
+  position: absolute;
+  inset-inline-start: clamp(14px, 4vw, 40px);
+  top: 55%;
+  width: clamp(53px, 12vw, 120px);
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .mascot-figure {
   display: block;
   position: relative;
-  width: min(100%, 112px);
-  margin-inline: auto;
   filter: drop-shadow(0 5px 8px rgba(3, 8, 22, 0.48));
-}
-
-.blog-mascot:hover .mascot-figure {
-  filter: drop-shadow(0 3px 10px rgba(196, 220, 255, 0.48));
-}
-
-.blog-mascot--angel .mascot-figure {
   mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+  animation: mascot-float 3.4s ease-in-out infinite;
 }
 
 .mascot-body,
@@ -407,29 +390,20 @@ body {
   position: absolute;
   inset: 0;
   height: 100%;
+  animation: mascot-flap 920ms ease-in-out infinite;
 }
 
 .mascot-wing--left { --lift: 10deg; transform-origin: 39% 64%; }
 .mascot-wing--right { --lift: -10deg; transform-origin: 65% 64%; }
 
-.blog-mascot--angel .mascot-body {
+.mascot-body {
   clip-path: polygon(0 0, 100% 0, 100% 48%, 80% 49%, 72% 55%, 68% 62%, 72% 78%, 77% 100%, 24% 100%, 27% 82%, 36% 63%, 33% 56%, 27% 51%, 0 51%);
 }
-.blog-mascot--angel .mascot-wing--left {
+.mascot-wing--left {
   clip-path: polygon(0 69%, 14% 56%, 23% 50%, 34% 49%, 37% 55%, 43% 60%, 45% 69%, 37% 83%, 0 85%);
 }
-.blog-mascot--angel .mascot-wing--right {
+.mascot-wing--right {
   clip-path: polygon(65% 59%, 72% 53%, 79% 48%, 87% 51%, 93% 62%, 100% 66%, 100% 83%, 82% 83%, 72% 77%, 65% 72%);
-}
-
-.blog-mascot--devil .mascot-body {
-  clip-path: polygon(0 0, 100% 0, 100% 51%, 81% 53%, 72% 58%, 67% 65%, 70% 75%, 73% 86%, 66% 100%, 22% 100%, 24% 83%, 29% 73%, 35% 63%, 30% 58%, 22% 55%, 0 53%);
-}
-.blog-mascot--devil .mascot-wing--left {
-  clip-path: polygon(11% 71%, 18% 63%, 24% 58%, 34% 56%, 40% 60%, 43% 68%, 34% 76%, 19% 79%, 11% 75%);
-}
-.blog-mascot--devil .mascot-wing--right {
-  clip-path: polygon(61% 62%, 67% 58%, 72% 55%, 80% 59%, 88% 68%, 88% 78%, 77% 80%, 68% 76%, 62% 70%);
 }
 
 .mascot-eyelid {
@@ -443,6 +417,7 @@ body {
   box-shadow: 0 0 1px #fbe5df;
   background: linear-gradient(180deg, #f7e4df, #fff1ea 56%, #ffe7e1);
   opacity: 0;
+  animation: mascot-blink 4.7s infinite;
 }
 
 .mascot-eyelid::after {
@@ -456,41 +431,23 @@ body {
   content: "";
 }
 
-.blog-mascot--angel .mascot-eyelid--left {
+.mascot-eyelid--left {
   --eye-left: 49%;
   --eye-top: 41.3%;
   --eye-width: 6.9%;
   --eye-height: 7.8%;
   --eye-tilt: -15deg;
 }
-.blog-mascot--angel .mascot-eyelid--right {
+.mascot-eyelid--right {
   --eye-left: 60.8%;
   --eye-top: 38.1%;
   --eye-width: 4.65%;
   --eye-height: 7.4%;
   --eye-tilt: -9deg;
 }
-.blog-mascot--devil .mascot-eyelid--left {
-  --eye-left: 34.3%;
-  --eye-top: 42.8%;
-  --eye-width: 6.15%;
-  --eye-height: 7.65%;
-  --eye-tilt: 11deg;
-}
-.blog-mascot--devil .mascot-eyelid--right {
-  --eye-left: 45.7%;
-  --eye-top: 39.8%;
-  --eye-width: 7.8%;
-  --eye-height: 7.45%;
-  --eye-tilt: 6deg;
-}
-
-.blog-mascot.is-reacting .mascot-wing {
-  animation: mascot-flap 260ms ease-in-out 2;
-}
-
-.blog-mascot.is-reacting .mascot-eyelid {
-  animation: mascot-blink 175ms ease-in-out 110ms;
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(3px); }
+  50% { transform: translateY(-6px); }
 }
 
 @keyframes mascot-flap {
@@ -499,12 +456,12 @@ body {
 }
 
 @keyframes mascot-blink {
-  0%, 100% { opacity: 0; }
-  30%, 70% { opacity: 1; }
+  0%, 88%, 94%, 100% { opacity: 0; }
+  90%, 92% { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .night-sky::before { transform: none; transition: none; }
   .star-click-layer { display: none; }
-  .blog-mascot.is-reacting :is(.mascot-wing, .mascot-eyelid) { animation: none; }
+  .mascot-figure, .mascot-wing, .mascot-eyelid { animation: none; }
 }

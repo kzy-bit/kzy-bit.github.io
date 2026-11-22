@@ -1,18 +1,8 @@
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const sidebar = document.getElementById('sidebar');
-  const mascotTemplate = document.getElementById('blog-mascots-template');
-  if (sidebar && mascotTemplate) {
-    const mascots = mascotTemplate.content.cloneNode(true);
-    for (const button of mascots.querySelectorAll('.blog-mascot')) {
-      button.addEventListener('click', () => {
-        if (reducedMotion.matches || button.classList.contains('is-reacting')) return;
-        button.classList.add('is-reacting');
-        window.setTimeout(() => button.classList.remove('is-reacting'), 570);
-      });
-    }
-    sidebar.append(mascots);
-  }
+  const header = document.getElementById('header-outer');
+  const angelTemplate = document.getElementById('blog-angel-template');
+  if (header && angelTemplate) header.append(angelTemplate.content.cloneNode(true));
 
   const wallpaper = document.querySelector('.night-sky');
 
@@ -56,7 +46,7 @@
     if (
       reducedMotion.matches ||
       event.detail === 0 ||
-      event.target.closest?.('.blog-mascot, input, textarea, select, [contenteditable=true]') ||
+      event.target.closest?.('input, textarea, select, [contenteditable=true]') ||
       !window.getSelection().isCollapsed
     ) {
       return;
